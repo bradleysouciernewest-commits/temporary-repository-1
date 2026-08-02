@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>Material 2 Notes • Note Taking</title>
   
+  <!-- Material Design 2 Web Components CSS -->
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- Roboto Font -->
@@ -13,7 +15,6 @@
   <style>
     :root {
       --mdc-theme-primary: #6200ee;
-      --mdc-theme-primary-light: #bb86fc;
       --mdc-theme-secondary: #03dac6;
       --mdc-theme-background: #f5f5f5;
       --mdc-theme-surface: #ffffff;
@@ -38,67 +39,6 @@
       overflow: hidden;
     }
 
-    /* Material Top App Bar */
-    .mdc-top-app-bar {
-      background: var(--mdc-theme-primary);
-      color: var(--mdc-theme-on-primary);
-      display: flex;
-      align-items: center;
-      height: 56px;
-      padding: 0 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1);
-      z-index: 100;
-      position: relative;
-    }
-
-    .mdc-top-app-bar__title {
-      font-size: 1.25rem;
-      font-weight: 500;
-      letter-spacing: 0.0125em;
-      margin-left: 8px;
-      flex: 1;
-    }
-
-    /* Icon Button */
-    .mdc-icon-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      padding: 12px;
-      border: none;
-      background: transparent;
-      color: inherit;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 24px;
-      transition: background-color 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .mdc-icon-button:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .mdc-icon-button:active {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .mdc-icon-button.dark {
-      color: #5f6368;
-    }
-
-    .mdc-icon-button.dark:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    .mdc-icon-button.dark:active {
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    /* Main Content */
     .main-content {
       flex: 1;
       overflow-y: auto;
@@ -109,49 +49,6 @@
       background: var(--mdc-theme-background);
     }
 
-    /* Search */
-    .search-container {
-      background: var(--mdc-theme-surface);
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-
-    .search-field {
-      display: flex;
-      align-items: center;
-      background: #f1f3f4;
-      padding: 4px 8px;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .search-field:focus-within {
-      background: white;
-      border-bottom-color: var(--mdc-theme-primary);
-    }
-
-    .search-field .material-icons {
-      color: #5f6368;
-      margin-right: 12px;
-    }
-
-    .search-field input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      padding: 12px 0;
-      font-size: 1rem;
-      font-family: 'Roboto', sans-serif;
-      outline: none;
-      color: #212121;
-    }
-
-    .search-field input::placeholder {
-      color: #5f6368;
-    }
-
-    /* Notes Grid */
     .notes-grid {
       display: flex;
       flex-direction: column;
@@ -159,65 +56,58 @@
       padding-bottom: 80px;
     }
 
-    /* Material Card */
-    .mdc-card {
-      background: var(--mdc-theme-surface);
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
-      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Note Card Styles */
+    .note-card {
       border-left: 4px solid transparent;
+      border-radius: 8px;
       overflow: hidden;
     }
 
-    .mdc-card:hover {
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.1);
-    }
-
-    .mdc-card:active {
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-
-    .mdc-card.category-work {
+    .note-card.category-work {
       border-left-color: #6200ee;
     }
-    .mdc-card.category-personal {
+    .note-card.category-personal {
       border-left-color: #03dac6;
     }
-    .mdc-card.category-ideas {
+    .note-card.category-ideas {
       border-left-color: #ff7597;
     }
-    .mdc-card.category-tasks {
+    .note-card.category-tasks {
       border-left-color: #ffb300;
     }
 
-    .card-content {
+    .note-card .mdc-card__primary-action {
       padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .card-title {
+    .note-title {
+      font-family: 'Roboto', sans-serif;
       font-size: 1.1rem;
       font-weight: 500;
+      letter-spacing: 0.0125em;
       color: #212121;
-      margin-bottom: 8px;
       word-break: break-word;
-      line-height: 1.4;
     }
 
-    .card-body {
+    .note-body {
+      font-family: 'Roboto', sans-serif;
       font-size: 0.875rem;
-      line-height: 1.6;
+      line-height: 1.5;
       color: #424242;
       white-space: pre-wrap;
       word-break: break-word;
-      margin-bottom: 12px;
     }
 
-    .card-meta {
+    .note-meta {
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 0.75rem;
       color: #757575;
+      margin-top: 4px;
     }
 
     .category-chip {
@@ -231,190 +121,34 @@
       color: #424242;
     }
 
-    .date-text {
+    .note-date {
       flex: 1;
     }
 
-    .card-actions {
+    .note-actions {
       display: flex;
-      gap: 4px;
+      gap: 0;
     }
 
-    /* FAB */
-    .fab {
+    .fab-container {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--mdc-theme-secondary);
-      color: var(--mdc-theme-on-secondary);
-      border: none;
-      box-shadow: 0 6px 10px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.15);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
       z-index: 50;
-      transition: box-shadow 0.3s, background-color 0.2s;
     }
 
-    .fab:hover {
-      box-shadow: 0 8px 12px rgba(0,0,0,0.25), 0 4px 8px rgba(0,0,0,0.2);
-      background: #00c4b4;
-    }
-
-    .fab:active {
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
-
-    /* Dialog */
-    .dialog-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 200;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      animation: fadeIn 0.2s ease;
-    }
-
-    .dialog-backdrop.active {
+    /* Dialog Content Styles */
+    .dialog-form {
       display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 0 24px 20px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .dialog {
-      background: white;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 24px 38px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.2);
-      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .dialog-header {
-      padding: 24px 24px 0;
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: #212121;
-    }
-
-    .dialog-content {
-      padding: 20px 24px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--mdc-theme-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
+    .mdc-select--filled {
       width: 100%;
-      padding: 12px;
-      border: none;
-      border-bottom: 2px solid #bdbdbd;
-      background: #f5f5f5;
-      border-radius: 4px 4px 0 0;
-      font-family: 'Roboto', sans-serif;
-      font-size: 1rem;
-      outline: none;
-      transition: all 0.2s;
-      color: #212121;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      border-bottom-color: var(--mdc-theme-primary);
-      background: #ede7f6;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .dialog-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      padding: 8px 16px 16px;
-    }
-
-    /* Buttons */
-    .mdc-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 4px;
-      font-family: 'Roboto', sans-serif;
-      font-size: 0.875rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: transparent;
-      color: var(--mdc-theme-primary);
-      min-width: 64px;
-    }
-
-    .mdc-button:hover {
-      background: rgba(98, 0, 238, 0.08);
-    }
-
-    .mdc-button:active {
-      background: rgba(98, 0, 238, 0.15);
-    }
-
-    .mdc-button--raised {
-      background: var(--mdc-theme-primary);
-      color: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .mdc-button--raised:hover {
-      background: #7c4dff;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
-    }
-
-    .mdc-button--raised:active {
-      background: #651fff;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    }
-
-    /* Empty State */
     .empty-state {
       display: flex;
       flex-direction: column;
@@ -431,99 +165,138 @@
       color: #bdbdbd;
     }
 
-    .empty-state p {
-      font-size: 1rem;
-      color: #757575;
-      line-height: 1.5;
-    }
-
-    /* Responsive */
     @media (max-width: 480px) {
-      .dialog {
-        width: 95%;
+      .mdc-dialog .mdc-dialog__surface {
         margin: 16px;
-      }
-      
-      .dialog-header {
-        padding: 20px 20px 0;
-      }
-      
-      .dialog-content {
-        padding: 16px 20px;
       }
     }
   </style>
 </head>
 <body>
   <!-- Material Top App Bar -->
-  <header class="mdc-top-app-bar">
-    <button class="mdc-icon-button material-icons" id="menuBtn" aria-label="Menu">menu</button>
-    <span class="mdc-top-app-bar__title">Material Notes</span>
-    <button class="mdc-icon-button material-icons" id="searchToggleBtn" aria-label="Search">search</button>
+  <header class="mdc-top-app-bar" id="app-bar">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <button class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon" id="menu-button">menu</button>
+        <span class="mdc-top-app-bar__title">Material Notes</span>
+      </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+        <button class="mdc-icon-button material-icons mdc-top-app-bar__action-item" id="search-button" aria-label="Search">search</button>
+      </section>
+    </div>
   </header>
 
   <!-- Main Content -->
   <div class="main-content">
-    <!-- Search -->
-    <div class="search-container" id="searchWrapper" style="display: none;">
-      <div class="search-field">
-        <span class="material-icons">search</span>
-        <input type="text" id="searchInput" placeholder="Search notes..." autocomplete="off">
-        <button class="mdc-icon-button dark material-icons" id="clearSearchBtn" aria-label="Clear search">close</button>
-      </div>
+    <!-- Search Field -->
+    <div id="search-wrapper" style="display: none;">
+      <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" id="search-text-field">
+        <span class="mdc-text-field__ripple"></span>
+        <i class="material-icons mdc-text-field__icon mdc-text-field__icon--leading">search</i>
+        <input class="mdc-text-field__input" type="text" id="search-input" placeholder="Search notes..." aria-label="Search notes">
+        <i class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing" id="clear-search-icon" role="button" tabindex="0" style="cursor: pointer;">close</i>
+        <span class="mdc-line-ripple"></span>
+      </label>
     </div>
 
     <!-- Notes Grid -->
-    <div class="notes-grid" id="notesGrid">
+    <div class="notes-grid" id="notes-grid">
       <!-- Dynamically populated -->
     </div>
   </div>
 
   <!-- FAB -->
-  <button class="fab material-icons" id="addNoteFab" aria-label="Add note">add</button>
-
-  <!-- Dialog -->
-  <div class="dialog-backdrop" id="noteDialog">
-    <div class="dialog">
-      <div class="dialog-header" id="dialogTitle">New Note</div>
-      <div class="dialog-content">
-        <div class="form-group">
-          <label for="noteTitleInput">Title</label>
-          <input type="text" id="noteTitleInput" placeholder="Enter note title" maxlength="100">
-        </div>
-        <div class="form-group">
-          <label for="noteContentInput">Content</label>
-          <textarea id="noteContentInput" placeholder="Write your note..." rows="4"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="noteCategorySelect">Category</label>
-          <select id="noteCategorySelect">
-            <option value="personal">Personal</option>
-            <option value="work">Work</option>
-            <option value="ideas">Ideas</option>
-            <option value="tasks">Tasks</option>
-          </select>
-        </div>
-      </div>
-      <div class="dialog-actions">
-        <button class="mdc-button" id="cancelDialogBtn">Cancel</button>
-        <button class="mdc-button mdc-button--raised" id="saveDialogBtn">Save</button>
-      </div>
-    </div>
+  <div class="fab-container">
+    <button class="mdc-fab material-icons" id="add-fab" aria-label="Add note">
+      <div class="mdc-fab__ripple"></div>
+      <span class="mdc-fab__icon">add</span>
+    </button>
   </div>
 
+  <!-- Material Dialog -->
+  <div class="mdc-dialog" id="note-dialog">
+    <div class="mdc-dialog__container">
+      <div class="mdc-dialog__surface">
+        <h2 class="mdc-dialog__title" id="dialog-title">New Note</h2>
+        <div class="dialog-form">
+          <!-- Title Field -->
+          <label class="mdc-text-field mdc-text-field--filled" id="title-text-field">
+            <span class="mdc-text-field__ripple"></span>
+            <span class="mdc-floating-label" id="title-label">Title</span>
+            <input class="mdc-text-field__input" type="text" id="title-input" maxlength="100" aria-labelledby="title-label">
+            <span class="mdc-line-ripple"></span>
+          </label>
+
+          <!-- Content Field -->
+          <label class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea" id="content-text-field">
+            <span class="mdc-text-field__ripple"></span>
+            <span class="mdc-floating-label" id="content-label">Content</span>
+            <span class="mdc-text-field__resizer">
+              <textarea class="mdc-text-field__input" id="content-input" rows="4" aria-labelledby="content-label"></textarea>
+            </span>
+            <span class="mdc-line-ripple"></span>
+          </label>
+
+          <!-- Category Select -->
+          <div class="mdc-select mdc-select--filled" id="category-select">
+            <div class="mdc-select__anchor" role="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="category-label">
+              <span class="mdc-select__ripple"></span>
+              <span id="category-label" class="mdc-floating-label">Category</span>
+              <span class="mdc-select__selected-text-container">
+                <span class="mdc-select__selected-text"></span>
+              </span>
+              <span class="mdc-select__dropdown-icon">
+                <i class="material-icons">arrow_drop_down</i>
+              </span>
+              <span class="mdc-line-ripple"></span>
+            </div>
+            <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
+              <ul class="mdc-list" role="listbox" aria-label="Category list">
+                <li class="mdc-list-item mdc-list-item--selected" data-value="personal" role="option" aria-selected="true">
+                  <span class="mdc-list-item__text">Personal</span>
+                </li>
+                <li class="mdc-list-item" data-value="work" role="option">
+                  <span class="mdc-list-item__text">Work</span>
+                </li>
+                <li class="mdc-list-item" data-value="ideas" role="option">
+                  <span class="mdc-list-item__text">Ideas</span>
+                </li>
+                <li class="mdc-list-item" data-value="tasks" role="option">
+                  <span class="mdc-list-item__text">Tasks</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mdc-dialog__actions">
+          <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
+            <span class="mdc-button__label">Cancel</span>
+          </button>
+          <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="save">
+            <span class="mdc-button__label">Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+  </div>
+
+  <!-- Material Components Web JS -->
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  
   <script>
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
+    (function() {
+      // Wait for MDC to be available
+      const mdc = window.mdc;
       
       // ============ STORAGE ============
-      const STORAGE_KEY = 'material2_notes_v4';
+      const STORAGE_KEY = 'material2_notes_mdc';
       
       const defaultNotes = [
         {
           id: '1',
           title: 'Welcome to Material Notes',
-          content: 'This is a note-taking app built with Material Design 2 principles. Click the + button to add a new note!',
+          content: 'This is a note-taking app built with official Material Design 2 components. Click the + button to add a new note!',
           category: 'work',
           createdAt: Date.now() - 200000,
         },
@@ -537,13 +310,12 @@
         {
           id: '3',
           title: 'App Ideas',
-          content: 'A minimalist journal with voice input and dark theme support. Maybe add cloud sync later.',
+          content: 'A minimalist journal with voice input and dark theme support.',
           category: 'ideas',
           createdAt: Date.now() - 50000,
         }
       ];
 
-      // Load notes
       function loadNotes() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
@@ -551,53 +323,61 @@
             const parsed = JSON.parse(stored);
             return parsed.length > 0 ? parsed : defaultNotes;
           } catch (e) {
-            console.error('Error loading notes:', e);
             return defaultNotes;
           }
         }
         return defaultNotes;
       }
 
-      // Save notes
       function saveNotes(notesArray) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(notesArray));
-        } catch (e) {
-          console.error('Error saving notes:', e);
-        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notesArray));
       }
 
-      // Initialize notes
       let notes = loadNotes();
-      if (!notes || notes.length === 0) {
-        notes = defaultNotes;
-        saveNotes(notes);
-      }
-
       let editingNoteId = null;
       let searchQuery = '';
 
+      // ============ INITIALIZE MDC COMPONENTS ============
+      
+      // Top App Bar
+      const topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
+      
+      // Search Text Field
+      const searchTextField = new mdc.textField.MDCTextField(document.getElementById('search-text-field'));
+      
+      // Dialog Text Fields
+      const titleTextField = new mdc.textField.MDCTextField(document.getElementById('title-text-field'));
+      const contentTextField = new mdc.textField.MDCTextField(document.getElementById('content-text-field'));
+      
+      // Category Select
+      const categorySelect = new mdc.select.MDCSelect(document.getElementById('category-select'));
+      
+      // Dialog
+      const dialog = new mdc.dialog.MDCDialog(document.getElementById('note-dialog'));
+      
+      // FAB
+      const fab = new mdc.fab.MDCFab(document.getElementById('add-fab'));
+      
+      // Initialize all icon buttons with ripple
+      const iconButtons = document.querySelectorAll('.mdc-icon-button');
+      iconButtons.forEach(button => {
+        const ripple = new mdc.ripple.MDCRipple(button);
+        ripple.unbounded = true;
+      });
+
       // ============ DOM ELEMENTS ============
-      const notesGrid = document.getElementById('notesGrid');
-      const searchWrapper = document.getElementById('searchWrapper');
-      const searchInput = document.getElementById('searchInput');
-      const searchToggleBtn = document.getElementById('searchToggleBtn');
-      const clearSearchBtn = document.getElementById('clearSearchBtn');
-      const addNoteFab = document.getElementById('addNoteFab');
-      const noteDialog = document.getElementById('noteDialog');
-      const dialogTitle = document.getElementById('dialogTitle');
-      const noteTitleInput = document.getElementById('noteTitleInput');
-      const noteContentInput = document.getElementById('noteContentInput');
-      const noteCategorySelect = document.getElementById('noteCategorySelect');
-      const cancelDialogBtn = document.getElementById('cancelDialogBtn');
-      const saveDialogBtn = document.getElementById('saveDialogBtn');
-      const menuBtn = document.getElementById('menuBtn');
+      const notesGrid = document.getElementById('notes-grid');
+      const searchWrapper = document.getElementById('search-wrapper');
+      const searchInput = document.getElementById('search-input');
+      const clearSearchIcon = document.getElementById('clear-search-icon');
+      const dialogTitle = document.getElementById('dialog-title');
+      const titleInput = document.getElementById('title-input');
+      const contentInput = document.getElementById('content-input');
 
       // ============ FUNCTIONS ============
       
-      // Filter notes based on search
       function filterNotes() {
-        if (!searchQuery || !searchQuery.trim()) return notes;
+        if (!searchQuery.trim()) return notes;
         const query = searchQuery.toLowerCase().trim();
         return notes.filter(note => 
           note.title.toLowerCase().includes(query) || 
@@ -606,7 +386,6 @@
         );
       }
 
-      // Format date
       function formatDate(timestamp) {
         const date = new Date(timestamp);
         const now = new Date();
@@ -623,7 +402,6 @@
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       }
 
-      // Escape HTML
       function escapeHtml(text) {
         if (!text) return '';
         return String(text)
@@ -634,21 +412,20 @@
           .replace(/'/g, '&#039;');
       }
 
-      // Generate unique ID
       function generateId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
       }
 
-      // Render all notes
       function renderNotes() {
-        console.log('Rendering notes...');
         const filtered = filterNotes();
         
         if (filtered.length === 0) {
           notesGrid.innerHTML = `
             <div class="empty-state">
               <span class="material-icons">lightbulb_outline</span>
-              <p>${searchQuery ? 'No notes match your search.' : 'No notes yet. Tap the + button to create your first note!'}</p>
+              <p style="font-family: 'Roboto', sans-serif; font-size: 1rem; color: #757575;">
+                ${searchQuery ? 'No notes match your search.' : 'No notes yet. Tap the + button to create one!'}
+              </p>
             </div>
           `;
           return;
@@ -661,16 +438,16 @@
           const safeContent = escapeHtml(note.content || 'Empty note').replace(/\n/g, '<br>');
           
           html += `
-            <div class="mdc-card ${categoryClass}" data-id="${note.id}">
-              <div class="card-content">
-                <div class="card-title">${safeTitle}</div>
-                <div class="card-body">${safeContent}</div>
-                <div class="card-meta">
+            <div class="mdc-card note-card ${categoryClass}" data-id="${note.id}">
+              <div class="mdc-card__primary-action" tabindex="0">
+                <div class="note-title">${safeTitle}</div>
+                <div class="note-body">${safeContent}</div>
+                <div class="note-meta">
                   <span class="category-chip">${note.category}</span>
-                  <span class="date-text">${formatDate(note.createdAt)}</span>
-                  <div class="card-actions">
-                    <button class="mdc-icon-button dark material-icons edit-btn" data-id="${note.id}" title="Edit">edit</button>
-                    <button class="mdc-icon-button dark material-icons delete-btn" data-id="${note.id}" title="Delete">delete_outline</button>
+                  <span class="note-date">${formatDate(note.createdAt)}</span>
+                  <div class="note-actions">
+                    <button class="mdc-icon-button material-icons edit-btn" data-id="${note.id}" title="Edit note" aria-label="Edit note">edit</button>
+                    <button class="mdc-icon-button material-icons delete-btn" data-id="${note.id}" title="Delete note" aria-label="Delete note">delete_outline</button>
                   </div>
                 </div>
               </div>
@@ -680,89 +457,83 @@
         
         notesGrid.innerHTML = html;
         
-        // Add event listeners to edit buttons
-        document.querySelectorAll('.edit-btn').forEach(btn => {
+        // Initialize ripples on new icon buttons
+        const newIconButtons = notesGrid.querySelectorAll('.mdc-icon-button');
+        newIconButtons.forEach(button => {
+          const ripple = new mdc.ripple.MDCRipple(button);
+          ripple.unbounded = true;
+        });
+        
+        // Add event listeners
+        notesGrid.querySelectorAll('.edit-btn').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
+            e.preventDefault();
             const id = this.getAttribute('data-id');
-            console.log('Edit button clicked for note:', id);
             openEditModal(id);
           });
         });
         
-        // Add event listeners to delete buttons
-        document.querySelectorAll('.delete-btn').forEach(btn => {
+        notesGrid.querySelectorAll('.delete-btn').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
+            e.preventDefault();
             const id = this.getAttribute('data-id');
-            console.log('Delete button clicked for note:', id);
             deleteNoteById(id);
           });
         });
       }
 
-      // Delete note
       function deleteNoteById(id) {
-        if (confirm('Are you sure you want to delete this note?')) {
+        if (confirm('Delete this note?')) {
           notes = notes.filter(note => note.id !== id);
           saveNotes(notes);
           renderNotes();
         }
       }
 
-      // Open edit modal
       function openEditModal(id) {
         const note = notes.find(n => n.id === id);
         if (!note) return;
         
         editingNoteId = id;
         dialogTitle.textContent = 'Edit Note';
-        noteTitleInput.value = note.title;
-        noteContentInput.value = note.content;
-        noteCategorySelect.value = note.category;
-        openDialog();
+        titleInput.value = note.title;
+        contentInput.value = note.content;
+        categorySelect.value = note.category;
+        
+        // Re-layout text fields with new values
+        titleTextField.layout();
+        contentTextField.layout();
+        
+        dialog.open();
       }
 
-      // Open new note modal
       function openNewNoteModal() {
         editingNoteId = null;
         dialogTitle.textContent = 'New Note';
-        noteTitleInput.value = '';
-        noteContentInput.value = '';
-        noteCategorySelect.value = 'personal';
-        openDialog();
+        titleInput.value = '';
+        contentInput.value = '';
+        categorySelect.value = 'personal';
+        
+        titleTextField.layout();
+        contentTextField.layout();
+        
+        dialog.open();
       }
 
-      // Open dialog
-      function openDialog() {
-        noteDialog.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        setTimeout(() => {
-          noteTitleInput.focus();
-        }, 100);
-      }
-
-      // Close dialog
-      function closeDialog() {
-        noteDialog.classList.remove('active');
-        document.body.style.overflow = '';
-        editingNoteId = null;
-      }
-
-      // Save note from dialog
       function saveNoteFromDialog() {
-        const title = noteTitleInput.value.trim();
-        const content = noteContentInput.value.trim();
-        const category = noteCategorySelect.value;
+        const title = titleInput.value.trim();
+        const content = contentInput.value.trim();
+        const category = categorySelect.value;
         
         if (!title && !content) {
-          alert('Please add a title or some content to your note.');
-          noteTitleInput.focus();
+          alert('Please add a title or some content.');
+          titleInput.focus();
           return;
         }
 
         if (editingNoteId) {
-          // Update existing note
           notes = notes.map(note => {
             if (note.id === editingNoteId) {
               return {
@@ -775,7 +546,6 @@
             return note;
           });
         } else {
-          // Create new note
           const newNote = {
             id: generateId(),
             title: title || 'Untitled',
@@ -787,14 +557,13 @@
         }
         
         saveNotes(notes);
-        closeDialog();
         renderNotes();
       }
 
-      // Search functions
       function toggleSearch() {
         if (searchWrapper.style.display === 'none' || !searchWrapper.style.display) {
           searchWrapper.style.display = 'block';
+          searchTextField.layout();
           setTimeout(() => searchInput.focus(), 100);
         } else {
           searchWrapper.style.display = 'none';
@@ -802,11 +571,6 @@
           searchQuery = '';
           renderNotes();
         }
-      }
-
-      function performSearch() {
-        searchQuery = searchInput.value;
-        renderNotes();
       }
 
       function clearSearch() {
@@ -818,76 +582,62 @@
 
       // ============ EVENT LISTENERS ============
       
-      // Search toggle button
-      searchToggleBtn.addEventListener('click', function(e) {
-        console.log('Search toggle clicked');
+      // Search button in top app bar
+      document.getElementById('search-button').addEventListener('click', function() {
         toggleSearch();
       });
       
       // Search input
       searchInput.addEventListener('input', function() {
-        performSearch();
+        searchQuery = this.value;
+        renderNotes();
       });
       
-      // Clear search button
-      clearSearchBtn.addEventListener('click', function() {
+      // Clear search icon
+      clearSearchIcon.addEventListener('click', function() {
         clearSearch();
       });
       
-      // FAB - Add note
-      addNoteFab.addEventListener('click', function(e) {
-        console.log('FAB clicked - opening new note modal');
+      // FAB click
+      fab.listen('click', function() {
         openNewNoteModal();
       });
       
-      // Cancel dialog button
-      cancelDialogBtn.addEventListener('click', function(e) {
-        console.log('Cancel button clicked');
-        closeDialog();
+      // Dialog events
+      dialog.listen('MDCDialog:opened', function() {
+        // Focus title input when dialog opens
+        setTimeout(() => {
+          titleInput.focus();
+          titleTextField.layout();
+          contentTextField.layout();
+        }, 150);
       });
       
-      // Save dialog button
-      saveDialogBtn.addEventListener('click', function(e) {
-        console.log('Save button clicked');
-        saveNoteFromDialog();
-      });
-      
-      // Close dialog on backdrop click
-      noteDialog.addEventListener('click', function(e) {
-        if (e.target === noteDialog) {
-          closeDialog();
-        }
-      });
-      
-      // Close dialog on Escape key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && noteDialog.classList.contains('active')) {
-          closeDialog();
-        }
-      });
-      
-      // Save on Ctrl+Enter in content
-      noteContentInput.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
+      dialog.listen('MDCDialog:closed', function(e) {
+        if (e.detail.action === 'save') {
           saveNoteFromDialog();
         }
+        editingNoteId = null;
       });
       
       // Menu button
-      menuBtn.addEventListener('click', function(e) {
-        console.log('Menu button clicked');
-        alert('📝 Material Notes\n\nA beautiful note-taking app built with Material Design 2 principles.\n\n• Create and organize notes\n• Search through your notes\n• Categorize with colors\n\nAll data is stored locally in your browser.');
+      document.getElementById('menu-button').addEventListener('click', function() {
+        alert('📝 Material Notes\n\nBuilt with Material Components Web (MDC-Web)\n\nAll your notes are stored locally.');
       });
       
+      // Keyboard shortcut: Ctrl+Enter to save in dialog
+      contentInput.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          // Close dialog with save action
+          dialog.close('save');
+        }
+      });
+
       // ============ INITIAL RENDER ============
-      console.log('App initialized, rendering notes...');
       renderNotes();
       
-      // Log success
-      console.log('Material Notes app is ready!');
-      console.log('Notes loaded:', notes.length);
-    });
+    })();
   </script>
 </body>
 </html>
