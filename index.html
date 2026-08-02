@@ -19,8 +19,6 @@
       --mdc-theme-background: #f5f5f5;
       --mdc-theme-surface: #ffffff;
       --mdc-theme-error: #b00020;
-      --mdc-theme-on-primary: #ffffff;
-      --mdc-theme-on-secondary: #000000;
     }
 
     * {
@@ -76,7 +74,7 @@
       border-left-color: #ffb300;
     }
 
-    .note-card .mdc-card__primary-action {
+    .note-content-wrapper {
       padding: 16px;
       display: flex;
       flex-direction: column;
@@ -123,11 +121,6 @@
 
     .note-date {
       flex: 1;
-    }
-
-    .note-actions {
-      display: flex;
-      gap: 0;
     }
 
     .fab-container {
@@ -290,13 +283,13 @@
       const mdc = window.mdc;
       
       // ============ STORAGE ============
-      const STORAGE_KEY = 'material2_notes_mdc';
+      const STORAGE_KEY = 'material2_notes_final';
       
       const defaultNotes = [
         {
           id: '1',
           title: 'Welcome to Material Notes',
-          content: 'This is a note-taking app built with official Material Design 2 components. Click the + button to add a new note!',
+          content: 'This note-taking app uses official Material Design 2 components. Click + to add a new note!',
           category: 'work',
           createdAt: Date.now() - 200000,
         },
@@ -321,12 +314,12 @@
         if (stored) {
           try {
             const parsed = JSON.parse(stored);
-            return parsed.length > 0 ? parsed : defaultNotes;
+            return parsed.length > 0 ? parsed : [...defaultNotes];
           } catch (e) {
-            return defaultNotes;
+            return [...defaultNotes];
           }
         }
-        return defaultNotes;
+        return [...defaultNotes];
       }
 
       function saveNotes(notesArray) {
@@ -334,33 +327,42 @@
       }
 
       let notes = loadNotes();
+      saveNotes(notes);
+      
       let editingNoteId = null;
       let searchQuery = '';
 
       // ============ INITIALIZE MDC COMPONENTS ============
       
       // Top App Bar
-      const topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
+      const topAppBarElement = document.getElementById('app-bar');
+      const topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarElement);
       
       // Search Text Field
-      const searchTextField = new mdc.textField.MDCTextField(document.getElementById('search-text-field'));
+      const searchTextFieldElement = document.getElementById('search-text-field');
+      const searchTextField = new mdc.textField.MDCTextField(searchTextFieldElement);
       
       // Dialog Text Fields
-      const titleTextField = new mdc.textField.MDCTextField(document.getElementById('title-text-field'));
-      const contentTextField = new mdc.textField.MDCTextField(document.getElementById('content-text-field'));
+      const titleTextFieldElement = document.getElementById('title-text-field');
+      const titleTextField = new mdc.textField.MDCTextField(titleTextFieldElement);
+      
+      const contentTextFieldElement = document.getElementById('content-text-field');
+      const contentTextField = new mdc.textField.MDCTextField(contentTextFieldElement);
       
       // Category Select
-      const categorySelect = new mdc.select.MDCSelect(document.getElementById('category-select'));
+      const categorySelectElement = document.getElementById('category-select');
+      const categorySelect = new mdc.select.MDCSelect(categorySelectElement);
       
       // Dialog
-      const dialog = new mdc.dialog.MDCDialog(document.getElementById('note-dialog'));
+      const dialogElement = document.getElementById('note-dialog');
+      const dialog = new mdc.dialog.MDCDialog(dialogElement);
       
-      // FAB
-      const fab = new mdc.fab.MDCFab(document.getElementById('add-fab'));
+      // FAB - Using MDCRipple since MDCFab might not be available
+      const fabElement = document.getElementById('add-fab');
+      const fabRipple = new mdc.ripple.MDCRipple(fabElement);
       
       // Initialize all icon buttons with ripple
-      const iconButtons = document.querySelectorAll('.mdc-icon-button');
-      iconButtons.forEach(button => {
+      document.querySelectorAll('.mdc-icon-button').forEach(button => {
         const ripple = new mdc.ripple.MDCRipple(button);
         ripple.unbounded = true;
       });
@@ -373,6 +375,8 @@
       const dialogTitle = document.getElementById('dialog-title');
       const titleInput = document.getElementById('title-input');
       const contentInput = document.getElementById('content-input');
+      const menuButton = document.getElementById('menu-button');
+      const searchButton = document.getElementById('search-button');
 
       // ============ FUNCTIONS ============
       
@@ -424,7 +428,7 @@
             <div class="empty-state">
               <span class="material-icons">lightbulb_outline</span>
               <p style="font-family: 'Roboto', sans-serif; font-size: 1rem; color: #757575;">
-                ${searchQuery ? 'No notes match your search.' : 'No notes yet. Tap the + button to create one!'}
+                ${searchQuery ? 'No notes match your search.' : 'No notes yet. Tap + to create one!'}
               </p>
             </div>
           `;
@@ -439,16 +443,14 @@
           
           html += `
             <div class="mdc-card note-card ${categoryClass}" data-id="${note.id}">
-              <div class="mdc-card__primary-action" tabindex="0">
+              <div class="note-content-wrapper">
                 <div class="note-title">${safeTitle}</div>
                 <div class="note-body">${safeContent}</div>
                 <div class="note-meta">
                   <span class="category-chip">${note.category}</span>
                   <span class="note-date">${formatDate(note.createdAt)}</span>
-                  <div class="note-actions">
-                    <button class="mdc-icon-button material-icons edit-btn" data-id="${note.id}" title="Edit note" aria-label="Edit note">edit</button>
-                    <button class="mdc-icon-button material-icons delete-btn" data-id="${note.id}" title="Delete note" aria-label="Delete note">delete_outline</button>
-                  </div>
+                  <button class="mdc-icon-button material-icons edit-btn" data-id="${note.id}" title="Edit note" aria-label="Edit note">edit</button>
+                  <button class="mdc-icon-button material-icons delete-btn" data-id="${note.id}" title="Delete note" aria-label="Delete note">delete_outline</button>
                 </div>
               </div>
             </div>
@@ -458,29 +460,26 @@
         notesGrid.innerHTML = html;
         
         // Initialize ripples on new icon buttons
-        const newIconButtons = notesGrid.querySelectorAll('.mdc-icon-button');
-        newIconButtons.forEach(button => {
+        notesGrid.querySelectorAll('.mdc-icon-button').forEach(button => {
           const ripple = new mdc.ripple.MDCRipple(button);
           ripple.unbounded = true;
-        });
-        
-        // Add event listeners
-        notesGrid.querySelectorAll('.edit-btn').forEach(btn => {
-          btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            const id = this.getAttribute('data-id');
-            openEditModal(id);
-          });
-        });
-        
-        notesGrid.querySelectorAll('.delete-btn').forEach(btn => {
-          btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            const id = this.getAttribute('data-id');
-            deleteNoteById(id);
-          });
+          
+          // Add event listeners
+          if (button.classList.contains('edit-btn')) {
+            button.addEventListener('click', function(e) {
+              e.stopPropagation();
+              e.preventDefault();
+              const id = this.getAttribute('data-id');
+              openEditModal(id);
+            });
+          } else if (button.classList.contains('delete-btn')) {
+            button.addEventListener('click', function(e) {
+              e.stopPropagation();
+              e.preventDefault();
+              const id = this.getAttribute('data-id');
+              deleteNoteById(id);
+            });
+          }
         });
       }
 
@@ -502,7 +501,7 @@
         contentInput.value = note.content;
         categorySelect.value = note.category;
         
-        // Re-layout text fields with new values
+        // Re-layout text fields
         titleTextField.layout();
         contentTextField.layout();
         
@@ -561,7 +560,7 @@
       }
 
       function toggleSearch() {
-        if (searchWrapper.style.display === 'none' || !searchWrapper.style.display) {
+        if (searchWrapper.style.display === 'none') {
           searchWrapper.style.display = 'block';
           searchTextField.layout();
           setTimeout(() => searchInput.focus(), 100);
@@ -582,8 +581,13 @@
 
       // ============ EVENT LISTENERS ============
       
-      // Search button in top app bar
-      document.getElementById('search-button').addEventListener('click', function() {
+      // Menu button
+      menuButton.addEventListener('click', function() {
+        alert('📝 Material Notes\n\nBuilt with Material Components Web\n\nStore your ideas beautifully.');
+      });
+      
+      // Search button
+      searchButton.addEventListener('click', function() {
         toggleSearch();
       });
       
@@ -593,19 +597,18 @@
         renderNotes();
       });
       
-      // Clear search icon
+      // Clear search
       clearSearchIcon.addEventListener('click', function() {
         clearSearch();
       });
       
       // FAB click
-      fab.listen('click', function() {
+      fabElement.addEventListener('click', function() {
         openNewNoteModal();
       });
       
       // Dialog events
       dialog.listen('MDCDialog:opened', function() {
-        // Focus title input when dialog opens
         setTimeout(() => {
           titleInput.focus();
           titleTextField.layout();
@@ -620,22 +623,17 @@
         editingNoteId = null;
       });
       
-      // Menu button
-      document.getElementById('menu-button').addEventListener('click', function() {
-        alert('📝 Material Notes\n\nBuilt with Material Components Web (MDC-Web)\n\nAll your notes are stored locally.');
-      });
-      
-      // Keyboard shortcut: Ctrl+Enter to save in dialog
+      // Keyboard shortcut
       contentInput.addEventListener('keydown', function(e) {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
           e.preventDefault();
-          // Close dialog with save action
           dialog.close('save');
         }
       });
 
       // ============ INITIAL RENDER ============
       renderNotes();
+      console.log('Material Notes app initialized successfully with MDC-Web!');
       
     })();
   </script>
